@@ -1,0 +1,96 @@
+<view class="container detail-page" wx:if="{{todo}}">
+  <view class="detail-card {{todo.status === 'done' ? 'is-done' : ''}}">
+    <view class="title-row">
+      <view class="detail-title">{{todo.title}}</view>
+      <view class="status {{todo.status}}">{{todo.status === 'done' ? '已完成' : '想做'}}</view>
+    </view>
+    <view class="created-at">创建于 {{todo.createdAtText}}</view>
+
+    <view class="detail-actions">
+      <view class="action-left" bindtap="editTitle">修改名称</view>
+      <view class="action-right {{todo.status === 'done' ? 'cancel' : ''}}" bindtap="toggleTodo">
+        {{todo.status === 'done' ? '取消完成' : '标记完成'}}
+      </view>
+    </view>
+  </view>
+
+  <view class="description-card" bindtap="editDescription">
+    <view class="description-head">
+      <view>
+        <view class="section-title">补充描述</view>
+        <view class="section-sub">记录这件事的小想法。</view>
+      </view>
+      <view class="description-edit">{{todo.description ? '修改' : '添加'}}</view>
+    </view>
+    <view wx:if="{{todo.description}}" class="description-text">{{todo.description}}</view>
+  </view>
+
+  <view class="photo-section">
+    <view class="section-head">
+      <view class="photo-heading">
+        <view class="section-title">事项照片/视频</view>
+        <view class="section-sub">上传照片、动图或视频，记录计划和回忆。</view>
+      </view>
+      <view class="photo-header-actions">
+        <button wx:if="{{photos.length}}" size="mini" class="select-btn {{selecting ? 'is-active' : ''}}" bindtap="toggleSelecting"><text class="button-label">{{selecting ? '取消选择' : '选择媒体'}}</text></button>
+        <button size="mini" class="upload-btn" bindtap="chooseAndUpload"><text class="button-label">上传照片/视频</text></button>
+      </view>
+    </view>
+
+    <view wx:if="{{selecting}}" class="batch-toolbar">
+      <view class="batch-meta">
+        <view class="selection-count">已选 <text class="selection-number">{{selectedPhotoIds.length}}</text> 个</view>
+        <button size="mini" class="select-all-btn" bindtap="toggleSelectAll"><text class="button-label">{{selectedPhotoIds.length === photos.length ? '取消' : '全选'}}</text></button>
+        <checkbox-group class="original-option" bindchange="onDownloadOriginalChange">
+          <label><checkbox value="original" checked="{{downloadOriginal}}" color="#ff6f85" />原图</label>
+        </checkbox-group>
+      </view>
+      <view class="batch-actions">
+        <button size="mini" class="batch-download" bindtap="confirmBatchDownload"><text class="button-label">下载</text></button>
+        <button size="mini" class="batch-delete" bindtap="confirmBatchDelete"><text class="button-label">删除</text></button>
+      </view>
+    </view>
+
+    <view wx:if="{{photos.length === 0}}" class="empty-photo">
+      <view class="empty-icon">♡</view>
+      <view class="empty-title">还没有照片或视频</view>
+    </view>
+
+    <view class="photo-grid">
+      <view wx:for="{{photos}}" wx:key="_id" class="photo-item {{item.selected ? 'selected' : ''}}" data-id="{{item._id}}" bindtap="togglePhotoSelection">
+        <image wx:if="{{item.mediaType !== 'video' && item.displayUrl}}" class="photo" src="{{item.displayUrl}}" mode="aspectFill" data-id="{{item._id}}" bindtap="preview" binderror="onImageError" />
+        <view wx:elif="{{item.mediaType === 'video'}}" class="video-thumb" data-id="{{item._id}}" bindtap="preview"><image wx:if="{{item.thumbnailUrl}}" class="photo" src="{{item.thumbnailUrl}}" mode="aspectFill"/><view class="video-play">▶</view></view>
+        <view wx:else class="photo photo-placeholder">图片加载中</view>
+        <view wx:if="{{selecting}}" class="photo-checkbox">{{item.selected ? '✓' : ''}}</view>
+      </view>
+    </view>
+    <view wx:if="{{loadingMore}}" class="photo-loading-more">正在加载更多照片…</view>
+  </view>
+  <canvas canvas-id="safety-check-canvas" class="safety-check-canvas" width="750" height="1334"></canvas>
+</view>
+
+<view wx:if="{{uploadProgressItems.length}}" class="upload-progress-dock {{uploadProgressExpanded ? 'is-expanded' : ''}}">
+  <view wx:if="{{uploadProgressExpanded}}" class="upload-progress-details">
+    <view class="upload-progress-heading">
+      <view class="upload-progress-title">媒体上传进度</view>
+      <view class="upload-progress-summary">{{uploadInProgress ? '队列中 ' + uploadProgressItems.length + ' 个' : '有媒体未完成'}}</view>
+    </view>
+    <scroll-view class="upload-progress-list" scroll-y="{{true}}">
+      <view wx:for="{{uploadProgressItems}}" wx:for-index="photoIndex" wx:key="photoIndex" class="upload-progress-row">
+        <view class="upload-row-top">
+          <text class="upload-photo-name">{{item.name}}</text>
+          <text class="upload-photo-percent">{{item.percent}}%</text>
+        </view>
+        <view class="upload-progress-track"><view class="upload-progress-fill" style="width: {{item.percent}}%;"></view></view>
+        <view class="upload-photo-status">{{item.status}}</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="upload-progress-bar" bindtap="toggleUploadProgress">
+    <view class="upload-bar-copy">
+    <view class="upload-bar-title">{{uploadInProgress ? '正在上传媒体' : '有媒体未完成'}}</view>
+    <view class="upload-bar-meta">列表 {{uploadProgressItems.length}} 个　{{uploadProgressExpanded ? '收起' : '查看详情'}}</view>
+    </view>
+    <view wx:if="{{!uploadInProgress}}" class="upload-bar-dismiss" catchtap="dismissUploadProgress">×</view>
+  </view>
+</view>

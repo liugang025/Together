@@ -1,0 +1,51 @@
+<view class="container todos-page">
+  <view class="soft-hero">
+    <view class="hero-copy">
+      <view class="hero-kicker">OUR WISHLIST</view>
+      <view class="hero-title">清单</view>
+      <view class="hero-desc">把想一起完成的事，慢慢变成回忆。</view>
+    </view>
+    <button size="mini" class="add-float" bindtap="goCreate">想做的事</button>
+  </view>
+
+  <view class="stats-card">
+    <view class="stat-item"><view class="stat-num">{{stats.total}}</view><view class="stat-label">全部</view></view>
+    <view class="stat-line"></view>
+    <view class="stat-item"><view class="stat-num">{{stats.todo}}</view><view class="stat-label">想做</view></view>
+    <view class="stat-line"></view>
+    <view class="stat-item"><view class="stat-num">{{stats.done}}</view><view class="stat-label">完成</view></view>
+  </view>
+
+  <view class="filters">
+    <view class="filter {{filter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="setFilter">全部</view>
+    <view class="filter {{filter === 'todo' ? 'active' : ''}}" data-filter="todo" bindtap="setFilter">想做</view>
+    <view class="filter {{filter === 'done' ? 'active' : ''}}" data-filter="done" bindtap="setFilter">已完成</view>
+  </view>
+
+  <view wx:if="{{todos.length === 0}}" class="empty-card">
+    <view class="empty-icon">♡</view>
+    <view class="empty-title">还没有记录</view>
+    <view class="empty-desc">点“想做的事”，添加你们的第一个小目标。</view>
+  </view>
+
+  <view class="todo-list {{draggingId ? 'is-sorting' : ''}}">
+    <view wx:for="{{todos}}" wx:key="_id" class="swipe-row {{openedTodoId === item._id ? 'opened' : ''}} {{draggingId === item._id ? 'dragging' : ''}}" style="{{draggingId === item._id ? 'transform: translateY(' + dragOffsetY + 'px) scale(1.018);' : ''}}" data-id="{{item._id}}" data-index="{{index}}" bindlongpress="onTodoLongPress" bindtouchstart="onTodoTouchStart" bindtouchmove="onTodoTouchMove" bindtouchend="onTodoTouchEnd" catchtouchcancel="onTodoTouchEnd">
+      <view class="actions-panel">
+        <view class="action-btn complete-action {{item.status === 'done' ? 'cancel' : ''}}" data-id="{{item._id}}" catchtap="toggleTodo">{{item.status === 'done' ? '取消' : '完成'}}</view>
+        <view class="action-btn delete-action" data-id="{{item._id}}" catchtap="deleteTodo">删除</view>
+      </view>
+      <view class="todo-card {{item.status === 'done' ? 'is-done' : ''}}" data-id="{{item._id}}" bindtap="openDetail">
+        <view class="todo-dot {{item.status === 'done' ? 'done' : ''}}">
+          <text>{{item.status === 'done' ? '✓' : '♡'}}</text>
+        </view>
+        <view class="todo-body">
+          <view class="todo-main-row">
+            <view class="todo-title {{item.status === 'done' ? 'done' : ''}}">{{item.title}}</view>
+            <view class="status-badge {{item.status}}">{{item.status === 'done' ? '完成' : '想做'}}</view>
+          </view>
+          <view wx:if="{{item.description}}" class="todo-desc">{{item.description}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

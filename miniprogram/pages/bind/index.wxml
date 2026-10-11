@@ -1,0 +1,18 @@
+﻿<view class="container">
+  <view class="hero card">
+    <view class="hero-title">建立你们的专属空间</view>
+    <view class="muted">只有绑定的两个人可以查看清单和照片。</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">我是第一个人</view>
+    <input class="input" placeholder="空间名称，例如：我们的日常" value="{{coupleName}}" bindinput="onNameInput" />
+    <button class="primary-btn" bindtap="createCouple">创建空间并生成邀请码</button>
+  </view>
+
+  <view class="card">
+    <view class="section-title">我有邀请码</view>
+    <input class="input" placeholder="输入另一半给你的邀请码" value="{{inviteCode}}" bindinput="onInviteInput" />
+    <button class="secondary-btn" bindtap="joinCouple">加入两人空间</button>
+  </view>
+</view>

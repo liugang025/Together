@@ -1,0 +1,45 @@
+<view class="player-page" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+  <view class="media-stage">
+    <image
+      wx:if="{{currentMedia && currentMedia.type === 'image'}}"
+      class="media-image"
+      src="{{currentMedia.src}}"
+      mode="aspectFit"
+      bindload="onStageReady"
+    />
+    <video
+      wx:elif="{{currentMedia && currentMedia.type === 'video'}}"
+      id="mediaPlayer"
+      class="player"
+      src="{{currentMedia.src}}"
+      poster="{{currentMedia.poster}}"
+      controls="{{true}}"
+      autoplay="{{true}}"
+      direction="90"
+      object-fit="contain"
+      show-fullscreen-btn="{{true}}"
+      show-center-play-btn="{{true}}"
+      enable-progress-gesture="{{true}}"
+      http-cache="{{true}}"
+      bindloadedmetadata="onStageReady"
+      binderror="onVideoError"
+    />
+  </view>
+  <view wx:if="{{loading}}" class="loading">正在加载媒体…</view>
+
+  <cover-view wx:if="{{carouselVisible}}" class="carousel-viewport">
+    <cover-view class="carousel-track" style="transform: translate3d(calc(-33.333333% + {{carouselOffset}}px), 0, 0); transition: {{carouselTransition}};">
+      <cover-view class="carousel-card">
+        <cover-image wx:if="{{currentIndex > 0}}" class="carousel-image" mode="aspectFit" style="{{mediaItems[currentIndex - 1].previewStyle || 'width:100%;height:100%;'}}" src="{{mediaItems[currentIndex - 1].type === 'video' ? mediaItems[currentIndex - 1].poster : mediaItems[currentIndex - 1].src}}" />
+      </cover-view>
+      <cover-view class="carousel-card">
+        <cover-image wx:if="{{mediaItems[currentIndex]}}" class="carousel-image" mode="aspectFit" style="{{mediaItems[currentIndex].previewStyle || 'width:100%;height:100%;'}}" src="{{mediaItems[currentIndex].type === 'video' ? mediaItems[currentIndex].poster : mediaItems[currentIndex].src}}" />
+      </cover-view>
+      <cover-view class="carousel-card">
+        <cover-image wx:if="{{currentIndex + 1 < mediaItems.length}}" class="carousel-image" mode="aspectFit" style="{{mediaItems[currentIndex + 1].previewStyle || 'width:100%;height:100%;'}}" src="{{mediaItems[currentIndex + 1].type === 'video' ? mediaItems[currentIndex + 1].poster : mediaItems[currentIndex + 1].src}}" />
+      </cover-view>
+    </cover-view>
+  </cover-view>
+  <cover-view wx:if="{{currentIndex > 0}}" class="nav-button previous" bindtap="previous">‹</cover-view>
+  <cover-view wx:if="{{currentIndex + 1 < totalCount}}" class="nav-button next" bindtap="next">›</cover-view>
+</view>

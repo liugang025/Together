@@ -1,0 +1,4 @@
+﻿<view class="container landing">
+  <view class="title">我们的清单</view>
+  <view class="muted">正在进入你们的两人空间...</view>
+</view>

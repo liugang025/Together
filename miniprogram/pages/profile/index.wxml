@@ -1,0 +1,76 @@
+<view class="container profile-page">
+  <view class="space-hero">
+    <view class="hero-kicker">OUR SPACE</view>
+    <view class="hero-title">我们的小宇宙</view>
+    <view class="hero-desc">把想做的事和拍下的瞬间，都放在这里。</view>
+  </view>
+
+  <view class="time-card">
+    <view class="time-head">
+      <view>
+        <view class="section-title">我们的时间</view>
+        <view class="section-sub">从遇见到同行，每一秒都在变成回忆。</view>
+      </view>
+    </view>
+    <view class="time-list">
+      <view wx:for="{{timeCounters}}" wx:key="key" class="time-item {{item.key}}">
+        <view class="time-label">{{item.label}}</view>
+        <view class="time-date">{{item.dateText}}</view>
+        <view class="time-main">
+          <text class="time-days">{{item.days}}</text>
+          <text class="time-unit">天</text>
+        </view>
+        <view class="time-clock">
+          <text>{{item.hours}}</text><text class="colon">:</text><text>{{item.minutes}}</text><text class="colon">:</text><text>{{item.seconds}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{showPeopleCard}}" class="couple-card">
+    <view class="section-head">
+      <view>
+        <view class="section-title">两个人</view>
+        <view class="section-sub">显示你们的头像和昵称</view>
+      </view>
+      <view class="joined-badge {{partnerJoined ? 'active' : ''}}">{{partnerJoined ? '已同行' : '等待加入'}}</view>
+    </view>
+
+    <view class="people-row">
+      <view class="person-card owner">
+        <view class="avatar-wrap">
+          <image wx:if="{{ownerAvatar}}" class="person-avatar" src="{{ownerAvatar}}" mode="aspectFill" binderror="onOwnerAvatarError" />
+          <view wx:else class="person-avatar text-avatar">1</view>
+          <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar"></button>
+        </view>
+        <view class="nickname-button" bindtap="editDisplayName">{{ownerNameInput || '设置显示名'}}</view>
+        <view class="person-hint">点头像同步微信头像</view>
+      </view>
+
+      <view class="heart-link">♡</view>
+
+      <view class="person-card partner {{partnerJoined ? '' : 'empty'}}">
+        <image wx:if="{{partnerAvatar}}" class="person-avatar" src="{{partnerAvatar}}" mode="aspectFill" binderror="onPartnerAvatarError" />
+        <view wx:else class="person-avatar text-avatar muted">2</view>
+        <view class="person-name">{{partnerName}}</view>
+        <view class="person-hint">{{partnerJoined ? '已加入空间' : '等待加入'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{inviteCode && !partnerJoined}}" class="invite-card">
+    <view>
+      <view class="invite-title">邀请另一半</view>
+      <view class="invite-desc">复制邀请码，发给对方加入空间。</view>
+    </view>
+    <button class="invite-copy" bindtap="showInviteCode">查看</button>
+  </view>
+
+  <view class="particle-heart">
+    <view class="heart-dust-layer">
+      <view wx:for="{{heartDust}}" wx:key="index" class="heart-dust {{item.motion}}" style="left: {{item.x}}%; top: {{item.y}}%; width: {{item.size}}rpx; height: {{item.size}}rpx; animation-delay: {{item.delay}}s; animation-duration: {{item.duration}}s;"></view>
+    </view>
+    <image class="particle-heart-image" src="/images/particle-heart-v6.png" mode="aspectFit" />
+    <view class="particle-heart-caption">我们的心跳，正在同频</view>
+  </view>
+</view>

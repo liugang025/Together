@@ -1,0 +1,15 @@
+<view class="container create-page">
+  <view class="soft-hero">
+    <view class="hero-kicker">NEW WISH</view>
+    <view class="hero-title">想做的事</view>
+    <view class="hero-desc">写下一件想和对方一起完成的小事。</view>
+  </view>
+
+  <view class="form-card">
+    <view class="field-label">想做什么</view>
+    <input class="input" placeholder="{{titleFocused ? '' : titlePlaceholder}}" value="{{title}}" data-field="title" bindinput="onInput" bindfocus="onFocus" bindblur="onBlur" />
+    <view class="field-label">补充描述</view>
+    <textarea class="textarea" placeholder="{{descriptionFocused ? '' : descriptionPlaceholder}}" value="{{description}}" data-field="description" bindinput="onInput" bindfocus="onFocus" bindblur="onBlur" />
+    <button class="save-btn" loading="{{saving}}" bindtap="createTodo">保存到清单</button>
+  </view>
+</view>

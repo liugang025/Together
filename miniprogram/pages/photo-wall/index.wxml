@@ -1,0 +1,60 @@
+<view class="container photo-page">
+  <view class="photo-hero">
+    <view>
+      <view class="eyebrow">MEMORIES</view>
+      <view class="hero-title">照片</view>
+      <view class="hero-subtitle">把事项照片和专属相册，都收藏在这里。</view>
+    </view>
+    <button size="mini" class="create-album-btn" bindtap="createAlbum">新建相册</button>
+  </view>
+
+  <view class="section-block">
+    <view class="section-head row space-between">
+      <view>
+        <view class="section-title">我们的相册</view>
+        <view class="section-sub">单独上传和收藏照片</view>
+      </view>
+    </view>
+    <view wx:if="{{albums.length === 0}}" class="empty-mini">还没有相册，点“新建相册”创建一个。</view>
+    <view class="album-list">
+      <view wx:for="{{albums}}" wx:key="_id" class="album-card" data-id="{{item._id}}" bindtap="openAlbum">
+        <image wx:if="{{item.coverUrl}}" class="album-cover" src="{{item.coverUrl}}" mode="aspectFill" lazy-load="{{true}}" data-field="album" data-id="{{item._id}}" data-url="{{item.coverUrl}}" binderror="onImageError" />
+        <view wx:else class="album-cover empty-cover">{{item.imageFailed ? '图片不可用' : '♡'}}</view>
+        <view class="album-info">
+          <view class="album-name">{{item.name}}</view>
+      <view class="album-count">{{item.photoCount || 0}} 个媒体</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-block">
+    <view class="section-head">
+      <view class="section-title">事项相册</view>
+      <view class="section-sub">按事项自动整理，每个事项就是一个相册。</view>
+    </view>
+
+    <view wx:if="{{todoAlbums.length === 0}}" class="empty-photo-card">
+      <view class="album-illus">
+        <view class="album-paper one"></view>
+        <view class="album-paper two"></view>
+        <view class="album-heart">♡</view>
+      </view>
+      <view class="empty-title">还没有照片</view>
+      <view class="empty-desc">进入事项详情，上传后会自动生成事项相册。</view>
+    </view>
+
+    <view class="todo-album-grid">
+      <view wx:for="{{todoAlbums}}" wx:key="todoId" class="todo-album-card" data-id="{{item.todoId}}" bindtap="openTodoAlbum">
+        <view class="todo-album-cover-wrap">
+          <image wx:if="{{item.coverUrl}}" class="todo-album-cover" src="{{item.coverUrl}}" mode="aspectFill" lazy-load="{{true}}" data-field="todo" data-id="{{item.todoId}}" data-url="{{item.coverUrl}}" binderror="onImageError" />
+          <view wx:else class="todo-album-cover todo-album-placeholder">{{item.imageFailed ? '图片不可用' : '图片加载中'}}</view>
+          <view class="todo-album-badge">{{item.count}} 个</view>
+        </view>
+        <view class="todo-album-info">
+          <view class="todo-album-title">{{item.title}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

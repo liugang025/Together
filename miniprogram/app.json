@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/bind/index",
+    "pages/todos/index",
+    "pages/todo-create/index",
+    "pages/photo-wall/index",
+    "pages/album-detail/index",
+    "pages/video-player/index",
+    "pages/profile/index",
+    "pages/todo-detail/index",
+    "pages/init/index"
+  ],
+  "window": {
+    "backgroundColor": "#FFF7F5",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FFF7F5",
+    "navigationBarTitleText": "",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#B7A5A5",
+    "selectedColor": "#FF6F85",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/todos/index",
+        "text": "清单"
+      },
+      {
+        "pagePath": "pages/photo-wall/index",
+        "text": "照片"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我们的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

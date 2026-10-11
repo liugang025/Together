@@ -1,0 +1,19 @@
+﻿<view class="container">
+  <view class="card">
+    <view class="title">初始化数据库</view>
+    <view class="muted">点击按钮后会在云开发环境中创建 users、couples、todos、todo_photos 四个集合。</view>
+  </view>
+
+  <view class="card">
+    <button class="primary-btn" loading="{{running}}" bindtap="initDatabase">创建数据库集合</button>
+    <button class="secondary-btn next" bindtap="goApp">进入小程序</button>
+  </view>
+
+  <view wx:if="{{results.length}}" class="card">
+    <view class="section-title">执行结果</view>
+    <view wx:for="{{results}}" wx:key="name" class="result-row">
+      <text>{{item.name}}</text>
+      <text>{{item.status}}</text>
+    </view>
+  </view>
+</view>
